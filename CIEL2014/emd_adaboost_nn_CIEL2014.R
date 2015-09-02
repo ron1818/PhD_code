@@ -1,4 +1,4 @@
-# how to cite
+### how to cite ###
 # @INPROCEEDINGS{Ren2014CIEL,
 #                author = {Ye Ren and Xueheng Qiu and P. N. Suganthan},
 #                title = {{EMD} based AdaBoost-{BPNN} Method for Wind Speed Forecasting},
@@ -9,19 +9,22 @@
 #   month = dec
 # }
 
-# setwd("work/CIEL2013_2014")
-# 0) initialize
+### 0) initialize ###
+# setwd('./CIEL2013') # current working 
+# required packages, if not installed, please use:
+# install.packages() function to install the packages
 require(RSNNS)
 require(MASS)
 require(xts)
 require(timeDate)
 require(forecast)
 require(EMD)
+# source user defined functions
 source('../AdaBoost/adaboost_fn.R')
 source('../misc/pre_processing_fn.R')
 source('../misc/post_processing_fn.R')
 source('../misc/cross_validation_fn.R')
-source('../method/mlp_fn.R')
+source('../Method/mlp_fn.R')
 
 # 4) read dataset
 wind<-read.csv('41004h2011.csv')
