@@ -13,7 +13,11 @@ vignettes/*.html
 vignettes/*.pdf
 
 # R data
+<<<<<<< HEAD
 *.Rdata
 
 # dropbox file
 *.lnk
+=======
+*.RData
+>>>>>>> origin/master
