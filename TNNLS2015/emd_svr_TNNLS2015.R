@@ -1,4 +1,4 @@
-# how to cite:
+### how to cite: ####
 # @ARTICLE{Ren2015TNNLS,
 #          author = {Ye Ren and P. N. Suganthan},
 #          title = {A Novel Empirical Mode Decomposition With Support Vector Regression for Wind Speed Forecasting},
@@ -9,8 +9,8 @@
 #          number = {99}
 # }
 
-
-setwd('./TNNLS2015')
+### main ###
+#setwd('./TNNLS2015')
 # load packages
 require(forecast)
 require(timeDate)
