@@ -1,4 +1,4 @@
-# how to cite
+#### how to cite  #####
 # @INPROCEEDINGS{Ren2013CIEL,
 #                author = {Ye Ren and Le Zhang and P. N. Suganthan},
 #                title = {K{NN} based bagging {SVM} pruning},
@@ -9,21 +9,26 @@
 #   month = apr
 # }
 
-setwd("./CIEL2013_2014")
-# 0) initialize
+
+
+### 0) initialize ###
+# setwd('./CIEL2013') # current working 
+# required packages, if not installed, please use:
+# install.packages() function to install the packages
 require(xts)
 require(e1071)
 require(bootstrap)
 require(RSNNS)
 require(timeDate)
 require(forecast)
+# source user defined functions
 source('../misc/pre_processing_fn.R')
 source('../misc/post_processing_fn.R')
 source('../misc/cross_validation_fn.R')
-source('../method/svm_fn.R')
-source('../method/knn_fn.R')
+source('../Method/svm_fn.R')
+source('../Method/knn_fn.R')
 
-# load data
+### 1) load data ###
 breast.wisconsin<-read.csv('breast_wisconsin.csv')
 labels<-breast.wisconsin[,'class'] #2 bengin, 4 malignant
 labels[which(labels==2)]=-1 #bengin
@@ -95,7 +100,7 @@ for (i in 1:nrow(trn.data)){
 
 # knn pruning
 k=31
-knn.dist.mat<-my_dist(trn.data,tst.data,k=k) #|tst|*|trn|(k)
+knn.dist.mat<-my_knn_dist(trn.data,tst.data,k=k) #|tst|*|trn|(k)
 
 # testing
 tst.predict<-array(NA,c(nrow(tst.data),k*r))
