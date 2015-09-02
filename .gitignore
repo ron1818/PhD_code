@@ -13,4 +13,4 @@ vignettes/*.html
 vignettes/*.pdf
 
 # R data
-*.Rdata
+*.RData
