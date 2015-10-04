@@ -21,3 +21,4 @@ vignettes/*.pdf
 =======
 *.RData
 >>>>>>> origin/master
+.Rproj.user
