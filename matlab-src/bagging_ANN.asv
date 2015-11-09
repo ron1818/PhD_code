@@ -1,0 +1,63 @@
+function [ predicted_labels ]= bagging_ANN( X_trn, Y_trn, X_tst, Y_tst, hiddenLayerSize, bag_numbers )
+% bootstraping
+if license('checkout', 'Statistics_Toolbox')
+    [tmp, bags] = bootstrp(bag_numbers, [], Y_trn, X_trn);
+elseif exist('randi', 'builtin')
+    bags=randi(length(Y_trn), length(Y_trn), bag_numbers);
+else
+    bags=randint(length(Y_trn), bag_numbers, [1 length(Y_trn)]);
+end
+clear tmp;
+
+
+% bagging training
+% preallocation
+models=cell(1,bag_numbers);
+fitted=zeros(length(Y_trn), bag_numbers);
+residuals=zeros(length(Y_trn), bag_numbers);
+OOB=zeros(3, bag_numbers);
+OOB_idx=zeros(length(Y_trn), bag_numbers);
+for i=1:bag_numbers % each bag
+    ith_bag=bags(:,i);
+    ith_data=X_trn(ith_bag,:);
+    ith_labels=Y_trn(ith_bag);
+    ith_outbag=setdiff((1:length(Y_trn)),ith_bag);
+    ith_outbag_data=X_trn(ith_outbag,:);
+    OOB_idx(ith_outbag,i)=1;
+    ith_outbag_labels=Y_trn(ith_outbag);
+    ith_predicted_OOB=myANN( ith_data, ith_labels, ith_outbag_data, ith_outbag_labels, hiddenLayerSize);
+    predicted_labels(:,i)=myANN( ith_data, ith_labels, X_tst, Y_tst, hiddenLayerSize);
+    
+% %     options=sprintf('-s 3 -t %u -c %f -g %f -d %f -p %f -q 1', kernel, 2^fine_best_c, fine_best_g, coarse_best_d, 10^fine_best_e);
+% %     models{i}=svmtrain(ith_labels, ith_data, options);
+% %     [pred]=svmpredict(ith_outbag_labels, ith_outbag_data, models{i});
+%     OOB(1,i)=sqrt(mean((pred - ith_outbag_labels).^2)); % RMSE
+% %     OOB(2,i)=mean(abs(pred - ith_outbag_labels)); % MAE
+%     OOB(2,i)=mean(abs((pred - ith_outbag_labels)./ith_outbag_labels))*100; % MAPE
+%     OOB(3,i)=mase( ith_outbag_labels, pred ); % MASE
+%     
+%     fitted(:,i)=svmpredict(training_labels, training_data, models{i});
+%     residuals(:,i)=fitted(:,i)-training_labels;
+end
+
+
+% % bagging testing
+% base_classifier_accuracy=zeros(3, bag_numbers);
+% predicted_labels=nan(size(testing_data,1),bag_numbers);
+% for j=1:bag_numbers% for each bags
+%     [predicted_labels(:,j)]=svmpredict(testing_labels, testing_data, models{j});
+%     base_classifier_accuracy(1,j)=sqrt(mean((predicted_labels(:,j) - testing_labels).^2)); % RMSE
+%     base_classifier_accuracy(2,j)=mean(abs((predicted_labels(:,j) - testing_labels)/mean(testing_labels)))*100; %MAPE
+%     base_classifier_accuracy(3,j)=mase( testing_labels, predicted_labels(:,j) ); % MASE
+% end
+% 
+% test_accuracy=zeros(3,1);
+% aggregated_predicted_labels=mean(predicted_labels,2);
+% test_accuracy(1)=sqrt(mean((aggregated_predicted_labels - testing_labels).^2)); % RMSE
+% test_accuracy(2)=mean(abs((aggregated_predicted_labels - testing_labels)./testing_labels))*100; % MAPE
+% test_accuracy(3)=mase( testing_labels, aggregated_predicted_labels ); % MASE
+
+end
+
+
+

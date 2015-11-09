@@ -1,0 +1,85 @@
+%print result
+week_idx=17:37;
+results_array={'result_1.mat', 'result_2.mat', 'result_4.mat', 'result_6.mat', 'result_8.mat'};
+
+%% Persistent, ARIMA, SVR, EMD-SVR, EMD-A-SVR, EMD-SVR-SVR, EMD-A-SVR-SVR
+fid=fopen('result.csv', 'w');
+fprintf(fid, 'Persistent, ARIMA, SVR, EMD-SVR, EMD-A-SVR, EMD-SVR-SVR, EMD-A-SVR-SVR\n'); %Title
+
+tmp=1:6;
+for res=results_array
+    load(res{:});
+for idx=week_idx
+    output_RMSE(idx,1:6)=result{idx}(tmp,1)';%RMSE
+    output_MAPE(idx,1:6)=result{idx}(tmp,2)';%MAPE
+    output_MASE(idx,1:6)=result{idx}(tmp,3)';%MASE
+end
+
+fprintf(fid, '%s\n', res{:}); % horizon
+fprintf(fid, 'RMSE,,,,,,,MAPE,,,,,,,MASE,,,,,,,\n');
+for idx=week_idx
+    fprintf(fid, '%.4f, %.4f, %.4f, %.4f, %.4f, %.4f,', output_RMSE(idx,:));
+    fprintf(fid, '%.4f, %.4f, %.4f, %.4f, %.4f, %.4f,', output_MAPE(idx,:));
+    fprintf(fid, '%.4f, %.4f, %.4f, %.4f, %.4f, %.4f\n', output_MASE(idx,:));
+end
+end
+fclose(fid);
+
+%% Persistent, ARIMA, SVR, EEMD-SVR, EEMD-A-SVR, EEMD-SVR-SVR, EEMD-A-SVR-SVR
+fid=fopen('result_EEMD.csv', 'w');
+fprintf(fid, 'Persistent, ARIMA, SVR, EEMD-SVR, EEMD-A-SVR, EEMD-SVR-SVR, EEMD-A-SVR-SVR\n'); %Title
+ 
+ tmp=[1 2 4 7 8 12 11]; 
+for res=results_array
+    load(res{:});
+for idx=week_idx
+    output_RMSE(idx,1:7)=result{idx}(tmp,1)';%RMSE
+    output_MAPE(idx,1:7)=result{idx}(tmp,2)';%MAPE
+    output_MASE(idx,1:7)=result{idx}(tmp,3)';%MASE
+end
+
+fprintf(fid, '%s\n', res{:}); % horizon
+fprintf(fid, 'RMSE,,,,,,,MAPE,,,,,,,MASE,,,,,,,\n');
+for idx=week_idx
+    fprintf(fid, '%.4f, %.4f, %.4f, %.4f, %.4f, %.4f, %.4f,', output_RMSE(idx,:));
+    fprintf(fid, '%.4f, %.4f, %.4f, %.4f, %.4f, %.4f, %.4f,', output_MAPE(idx,:));
+    fprintf(fid, '%.4f, %.4f, %.4f, %.4f, %.4f, %.4f, %.4f\n', output_MASE(idx,:));
+end
+end
+fclose(fid);
+
+
+% %% ALL: Persistent, ARIMA, SVR, EMD-SVR, EEMD-SVR, EMD-A-SVR, EEMD-A-SVR, Proposed(EMD), Proposed(EEMD)
+% tmp=[1 2 4 5 7 6 8 11];
+% for idx=week_idx
+%     output_RMSE(idx,1:8)=result{idx}(tmp,1)';%RMSE
+%     output_MAPE(idx,1:8)=result{idx}(tmp,2)';%MAPE
+%     output_MASE(idx,1:8)=result{idx}(tmp,3)';%MASE
+% end
+% 
+% %% Wilcoxon on all
+% for i=[1 2 3 4 5 6 7 8]
+%     for j=[1 2 3 4 5 6 7 8]
+%         [z_RMSE(i,j), N_RMSE(i,j), rplus_RMSE(i,j), rminus_RMSE(i,j)]=myWilcoxon(output_RMSE(week_idx,i), output_RMSE(week_idx,j));
+%         [z_MAPE(i,j), N_MAPE(i,j), rplus_MAPE(i,j), rminus_MAPE(i,j)]=myWilcoxon(output_MAPE(week_idx,i), output_MAPE(week_idx,j));
+%         [z_MASE(i,j), N_MASE(i,j), rplus_MASE(i,j), rminus_MASE(i,j)]=myWilcoxon(output_MASE(week_idx,i), output_MASE(week_idx,j));
+%     end
+% end
+% 
+% %% Wilcoxon on SVR, EMD-SVR n EEMD-SVR
+% for i=[3 4 5]
+%     for j=[3 4 5]
+%         [z, n, rp, rm]=myWilcoxon(output_RMSE(week_idx,i), output_RMSE(week_idx,j));
+%         
+%         if i==j% diagonal: void
+%             Mat1(i,j)=NaN;
+%         elseif i>j% lower tri: Z
+%             Mat1(i,j)= z;
+%         else% upper tri: N
+%             Mat1(i,j)= rp;
+%         end
+%     end
+% end
+
+
+
