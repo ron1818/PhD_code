@@ -1,0 +1,58 @@
+# for Information science special issue
+# load required packages
+require(xts)
+require(RSNNS)
+require(MASS)
+require(timeDate)
+require(forecast)
+require(e1071)
+require(randomForest)
+require(bootstrap)
+
+# source required files
+source('../RVFL/rvfl.R')
+source("../misc/pre_processing_fn.R");source('../misc/post_processing_fn.R');source('../misc/cross_validation_fn.R')
+source('../method/svm_fn.R');source('../method/mlp_fn.R');source('../method/rf_fn.R')
+
+# load data
+load.path<-'../../dataset/AEMO/'
+# load data selected, typically four seasons
+load.data.name<-c('DATA2013_NSW1.csv')
+
+# month and year idx
+month=c('01','02','03','04','05','06','07','08','09','10','11','12')
+year='2013'
+# load load datasets
+load.data<-read.csv(paste(load.path,load.data.name,sep=""))
+# holiday
+holiday.date<-as.matrix(read.table(paste(load.path,'holidays_2013.csv',sep=""),header=F))
+is.holiday<-xts(rep(1,nrow(holiday.date)),timeDate(holiday.date,format='%Y-%m-%d'))
+# convert to ts, SETTLEMENTDATE TOTALDEMAND RRP
+load.xts<-xts(cbind(load.data[,'TOTALDEMAND'],load.data[,'RRP'],rep(0,nrow(load.data))),timeDate(load.data[,"SETTLEMENTDATE"],format="%Y/%m/%d %H:%M:%S"),FinCenter='Sydney')
+load.xts[holiday.date,3]=1# holiday index =1
+colnames(load.xts)<-c('DMD','RRP','HLD')
+# smooth out holiday
+holiday.idx<-which(load.xts[,'HLD']==1)
+noholiday.load.xts<-load.xts
+weekday.step<-48*7
+for(i in holiday.idx){
+    if(i<=weekday.step){
+        noholiday.load.xts[i,c('DMD','RRP')]=NA
+        noholiday.load.xts[i,'HLD']=0
+    }else{ # copy previous 7 days ago data
+        noholiday.load.xts[i,]=noholiday.load.xts[i-weekday.step,]
+    }
+}
+org.data.xts<-noholiday.load.xts[complete.cases(noholiday.load.xts),]
+load.xts<-org.data.xts
+
+#scale data
+# data.xts<-my_scale_ts(org.data.xts,c(0,1))$scaled
+
+#HORIZON_range=c(2,seq(4,48,4))
+HORIZON_range=2
+HORIZON=max(HORIZON_range)
+HORIZON_length=length(HORIZON_range)
+RATIO=0.5
+TRIAL=30
+seed.array<-.Random.seed[1:TRIAL]
