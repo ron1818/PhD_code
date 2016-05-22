@@ -6,7 +6,7 @@ I strongly suggest you to install the free software [R](https://www.r-project.or
 r and matlab code (only on EMD/EEMD), datasets, published papers for my phd study 2011-2015
 
 ## This includes:
-*AdaBoost: adaboost functions
+* AdaBoost: adaboost functions
   * adaboostM1: classification
   * adaboostM2: classification
   * adaboostR2: regression
@@ -14,15 +14,15 @@ r and matlab code (only on EMD/EEMD), datasets, published papers for my phd stud
   * adaboostRT: regression
   * Big error margin boost: regression
     
-*CIEL2013: IEEE International Symposium of Computational Intelligence on Ensemble Learning       
+* CIEL2013: IEEE International Symposium of Computational Intelligence on Ensemble Learning       
 
-*CIEL2014: IEEE International Symposium of Computational Intelligence on Ensemble Learning       
+* CIEL2014: IEEE International Symposium of Computational Intelligence on Ensemble Learning       
 
-*FUZZ2013: IEEE International Symposium on Fuzzy system      
+* FUZZ2013: IEEE International Symposium on Fuzzy system      
 
-*JPEE2014: Journal of Power and Energy Engineering       
+* JPEE2014: Journal of Power and Energy Engineering       
 
-*Method: some machine learning methods        
+* Method: some machine learning methods        
   * ARIMA
   * DENFIS
   * KNN
@@ -30,19 +30,19 @@ r and matlab code (only on EMD/EEMD), datasets, published papers for my phd stud
   * RF
   * SVM
     
-*misc: some other function          
+* misc: some other function          
   * Cross validation
   * Outlier
   * Preprocessing
   * Postprocessing
     
-*TNNLS2015: IEEE trans. neural network and learning systems
+* TNNLS2015: IEEE trans. neural network and learning systems
 
-*Infomation Sciences 2016: Elsevier trans.
+* Infomation Sciences 2016: Elsevier trans.
 
-*matlab-src: some matlab code pre 2013. obsolete due to insufficient license checkout 
+* matlab-src: some matlab code pre 2013. obsolete due to insufficient license checkout 
 
-*RVFL: rvfl code for Information sciences and other projects
+* RVFL: rvfl code for Information sciences and other projects
 
 
 ## references:
